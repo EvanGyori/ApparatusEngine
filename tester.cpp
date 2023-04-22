@@ -8,8 +8,8 @@
 
 int main()
 {
-	auto test = "Hello World\n";
-	std::cout << test;
+	auto hello = "Hello World\n";
+	std::cout << hello;
 	std::cout << "Version: " << Apparatus_VERSION_MAJOR << "." << Apparatus_VERSION_MINOR << '\n';
 	std::cout << "Project directory: " << PROJECT_BINARY_DIR << '\n';
 	std::cout << "source directory: " << PROJECT_SOURCE_DIR << '\n';
