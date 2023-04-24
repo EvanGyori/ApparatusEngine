@@ -1,2 +1,5 @@
 add_library(Window Window.cpp)
 target_include_directories(Window INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(Window compiler_flags)
+install(TARGETS Window DESTINATION lib)
+install(FILES Window.h DESTINATION include)
