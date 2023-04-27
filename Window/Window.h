@@ -1,1 +1,3 @@
-int test();
+#include <GLFW/glfw3.h>
+
+GLFWwindow* createWindow();

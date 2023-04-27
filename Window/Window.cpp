@@ -1,6 +1,7 @@
 #include "Window.h"
 
-int test()
+GLFWwindow* createWindow()
 {
-	return 3;
+
+	return glfwCreateWindow(400, 400, "Window", nullptr, nullptr);
 }

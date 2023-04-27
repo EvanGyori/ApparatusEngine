@@ -14,7 +14,13 @@ int main()
 	std::cout << "Project directory: " << PROJECT_BINARY_DIR << '\n';
 	std::cout << "source directory: " << PROJECT_SOURCE_DIR << '\n';
 	#ifdef USE_WINDOW
-	std::cout << test() << '\n';
+	glfwInit();
+	GLFWwindow* window = createWindow();
+	while (!glfwWindowShouldClose(window)) {
+		
+		glfwPollEvents();
+	}
+	glfwDestroyWindow(window);
 	#endif
 
 	return 0;
