@@ -1,7 +1,29 @@
 #include "Window.h"
 
-GLFWwindow* createWindow()
+Window::Window() :
+	handle(nullptr)
 {
+}
 
-	return glfwCreateWindow(400, 400, "Window", nullptr, nullptr);
+Window::~Window()
+{
+	cleanup();
+}
+
+void Window::cleanup()
+{
+	if (handle) {
+		glfwDestroyWindow(handle);
+	}
+}
+
+void Window::init(int width, int height, const char* title)
+{
+	handle = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	// TODO error handling
+}
+
+bool Window::running()
+{
+	return !glfwWindowShouldClose(handle);
 }
