@@ -6,6 +6,11 @@
 #include "Window.h"
 #endif
 
+#ifdef USE_GRAPHICS
+#include "VulkanInstance.h"
+#include "DebugMessenger.h"
+#endif
+
 int main()
 {
 	auto hello = "Hello World\n";
@@ -22,6 +27,19 @@ int main()
 	window.cleanup();
 
 	glfwTerminate();
+	#endif
+
+	#ifdef USE_GRAPHICS
+	try {
+		VulkanInstance instance;
+		instance.init("Test");
+		DebugMessenger debugMessenger;
+		debugMessenger.init(instance);
+		debugMessenger.cleanup();
+		instance.cleanup();
+	} catch (std::exception& e) {
+		std::cout << e.what() << '\n';
+	}
 	#endif
 
 	return 0;

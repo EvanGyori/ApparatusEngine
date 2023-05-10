@@ -1,4 +1,5 @@
-find_package(glfw3 REQUIRED NAMES GLFW glfw3)
+find_package(glfw3 REQUIRED
+	NAMES GLFW glfw3)
 
 add_library(Window Window.cpp)
 target_include_directories(Window

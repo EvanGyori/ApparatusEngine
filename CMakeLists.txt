@@ -18,6 +18,15 @@ if(USE_WINDOW)
 	list(APPEND LIBS_LIST Window)
 endif()
 
+option(USE_GRAPHICS "Use Graphics module; Window is included" ON)
+if(USE_GRAPHICS)
+	add_subdirectory(Graphics)
+	list(APPEND LIBS_LIST Graphics)
+endif()
+
+# remove
+find_package(Vulkan REQUIRED)
+
 configure_file(Config.h.in Config.h)
 
 add_executable(Tester tester.cpp)

@@ -1,3 +1,4 @@
 #define Apparatus_VERSION_MAJOR @Apparatus_VERSION_MAJOR@
 #define Apparatus_VERSION_MINOR @Apparatus_VERSION_MINOR@
 #cmakedefine USE_WINDOW
+#cmakedefine USE_GRAPHICS
