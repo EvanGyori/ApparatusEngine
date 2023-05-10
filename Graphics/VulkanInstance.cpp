@@ -1,6 +1,6 @@
 #include "VulkanInstance.h"
 
-#include <string>
+#include <cstring>
 
 #include "DebugMessenger.h"
 

@@ -24,9 +24,6 @@ if(USE_GRAPHICS)
 	list(APPEND LIBS_LIST Graphics)
 endif()
 
-# remove
-find_package(Vulkan REQUIRED)
-
 configure_file(Config.h.in Config.h)
 
 add_executable(Tester tester.cpp)

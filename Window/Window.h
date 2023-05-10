@@ -1,3 +1,6 @@
+#ifdef USE_GRAPHICS
+#define GLFW_INCLUDE_VULKAN
+#endif
 #include <GLFW/glfw3.h>
 
 class Window

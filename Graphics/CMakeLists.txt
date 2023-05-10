@@ -4,7 +4,7 @@ endif()
 
 find_package(Vulkan REQUIRED)
 
-add_library(Graphics VulkanInstance.cpp DebugMessenger.cpp)
+add_library(Graphics VulkanInstance.cpp DebugMessenger.cpp Surface.cpp)
 target_include_directories(Graphics
 	INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}"
 	PUBLIC Vulkan::Headers)
