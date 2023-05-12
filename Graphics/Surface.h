@@ -3,6 +3,8 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include <vector>
+
 #include "VulkanInstance.h"
 #include "Window.h"
 
@@ -14,6 +16,10 @@ public:
 
 	~Surface();
 	void cleanup();
+
+	VkSurfaceCapabilitiesKHR getCapabilities(VkPhysicalDevice device);
+	std::vector<VkSurfaceFormatKHR> getFormats(VkPhysicalDevice device);
+	std::vector<VkPresentModeKHR> getPresentModes(VkPhysicalDevice device);
 
 private:
 	VkInstance instanceHandle;
