@@ -9,6 +9,8 @@
 #ifdef USE_GRAPHICS
 #include "VulkanInstance.h"
 #include "DebugMessenger.h"
+#include "Surface.h"
+#include "LogicalDevice.h"
 #endif
 
 int main()
@@ -31,12 +33,28 @@ int main()
 
 	#ifdef USE_GRAPHICS
 	try {
+		glfwInit();
+		Window window;
+		window.init(500, 500, "tester");
+
 		VulkanInstance instance;
 		instance.init("Test");
 		DebugMessenger debugMessenger;
 		debugMessenger.init(instance);
+		Surface surface;
+		surface.init(instance, window);
+		LogicalDevice device;
+		device.init(LogicalDevice::findSuitablePhysicalDevice(instance, surface), surface);
+
+		while (window.running()) {
+			glfwPollEvents();
+		}
+
+		device.cleanup();
+		surface.cleanup();
 		debugMessenger.cleanup();
 		instance.cleanup();
+		window.cleanup();
 	} catch (std::exception& e) {
 		std::cout << e.what() << '\n';
 	}

@@ -29,3 +29,8 @@ bool Window::running()
 {
 	return !glfwWindowShouldClose(handle);
 }
+
+GLFWwindow* Window::getHandle()
+{
+	return handle;
+}

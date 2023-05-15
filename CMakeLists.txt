@@ -4,7 +4,7 @@ project(Apparatus VERSION 1.0)
 set(LIBS_LIST)
 
 add_library(compiler_flags INTERFACE)
-target_compile_features(compiler_flags INTERFACE cxx_std_11)
+target_compile_features(compiler_flags INTERFACE cxx_std_17)
 
 set(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU,LCC>")
 set(msvc_cxx "$<COMPILE_LANG_AND_ID:CXX,MSVC>")

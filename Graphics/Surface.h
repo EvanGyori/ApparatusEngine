@@ -21,6 +21,8 @@ public:
 	std::vector<VkSurfaceFormatKHR> getFormats(VkPhysicalDevice device);
 	std::vector<VkPresentModeKHR> getPresentModes(VkPhysicalDevice device);
 
+	VkBool32 supportsQueueFamily(VkPhysicalDevice device, uint32_t queueFamilyIndex);
+
 private:
 	VkInstance instanceHandle;
 	VkSurfaceKHR handle;

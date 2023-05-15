@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef USE_GRAPHICS
 #define GLFW_INCLUDE_VULKAN
 #endif

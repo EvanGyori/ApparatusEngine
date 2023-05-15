@@ -41,7 +41,7 @@ std::vector<VkSurfaceFormatKHR> Surface::getFormats(VkPhysicalDevice device)
 	uint32_t count = 0;
 	VkResult result = vkGetPhysicalDeviceSurfaceFormatsKHR(device, handle, &count, nullptr); VK_CHECK(result);
 	std::vector<VkSurfaceFormatKHR> formats(count);
-	result = vkGetPhysicalDeviceSurfaceFormatsKHR(device handle, &count, formats.data()); VK_CHECK(result);
+	result = vkGetPhysicalDeviceSurfaceFormatsKHR(device, handle, &count, formats.data()); VK_CHECK(result);
 	return formats;
 }
 
@@ -52,4 +52,11 @@ std::vector<VkPresentModeKHR> Surface::getPresentModes(VkPhysicalDevice device)
 	std::vector<VkPresentModeKHR> presentModes(count);
 	result = vkGetPhysicalDeviceSurfacePresentModesKHR(device, handle, &count, presentModes.data()); VK_CHECK(result);
 	return presentModes;
+}
+
+VkBool32 Surface::supportsQueueFamily(VkPhysicalDevice device, uint32_t queueFamilyIndex)
+{
+	VkBool32 supported = VK_FALSE;
+	VkResult result = vkGetPhysicalDeviceSurfaceSupportKHR(device, queueFamilyIndex, handle, &supported); VK_CHECK(result);
+	return supported;
 }
