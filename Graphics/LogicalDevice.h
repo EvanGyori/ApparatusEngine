@@ -43,5 +43,27 @@ private:
 	static QueueFamily findGraphicsFamily(VkPhysicalDevice device);
 	static QueueFamily findPresentFamily(VkPhysicalDevice device, Surface& surface);
 
-	std::vector<VkDeviceQueueCreateInfo> getQueueCreateInfos(float* priorities);
+	//std::vector<VkDeviceQueueCreateInfo> getQueueCreateInfos(float* priorities);
+
+	template<typename... Params>
+	void getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos,
+		uint32_t queueFamilyIndex, uint32_t queueCount, float* priorities,
+		Params... params);
+
+	void getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos);
 };
+
+template<typename... Params>
+void LogicalDevice::getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos,
+	uint32_t queueFamilyIndex, uint32_t queueCount, float* priorities,
+	Params... params)
+{
+	VkDeviceQueueCreateInfo createInfo{};
+	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	createInfo.queueFamilyIndex = queueFamilyIndex;
+	createInfo.queueCount = queueCount;
+	createInfo.pQueuePriorities = priorities;
+	createInfos.push_back(createInfo);
+
+	getQueueCreateInfos(createInfos, params...);
+}

@@ -30,7 +30,15 @@ void LogicalDevice::init(VkPhysicalDevice _physicalDevice, Surface& surface)
 	graphicsFamily = findGraphicsFamily(physicalDevice);
 	presentFamily = findPresentFamily(physicalDevice, surface);
 	float priority = 1.0f;
-	auto queueCreateInfos = getQueueCreateInfos(&priority);
+	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos{};
+	if (graphicsFamily.index.value() == presentFamily.index.value()) {
+		getQueueCreateInfos(queueCreateInfos,
+			graphicsFamily.index.value(), 1, &priority);
+	} else {
+		getQueueCreateInfos(queueCreateInfos,
+			graphicsFamily.index.value(), 1, &priority,
+			presentFamily.index.value(), 1, &priority);
+	}
 	createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 	createInfo.pQueueCreateInfos = queueCreateInfos.data();
 
@@ -42,6 +50,9 @@ void LogicalDevice::init(VkPhysicalDevice _physicalDevice, Surface& surface)
 	createInfo.pEnabledFeatures = &features;
 
 	VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &handle); VK_CHECK(result);
+
+	vkGetDeviceQueue(handle, graphicsFamily.index.value(), 0, &graphicsFamily.queue);
+	vkGetDeviceQueue(handle, presentFamily.index.value(), 0, &presentFamily.queue);
 }
 
 LogicalDevice::~LogicalDevice()
@@ -172,6 +183,7 @@ QueueFamily LogicalDevice::findPresentFamily(VkPhysicalDevice device, Surface& s
 	return presentFamily;
 }
 
+/*
 std::vector<VkDeviceQueueCreateInfo> LogicalDevice::getQueueCreateInfos(float* priorities)
 {
 	std::vector<VkDeviceQueueCreateInfo> createInfos{};
@@ -193,4 +205,9 @@ std::vector<VkDeviceQueueCreateInfo> LogicalDevice::getQueueCreateInfos(float* p
 	}
 
 	return createInfos;
+}
+*/
+
+void LogicalDevice::getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos)
+{
 }
