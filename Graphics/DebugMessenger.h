@@ -29,7 +29,7 @@ class DebugMessenger
 {
 public:
 	/**
-	 * @brief Doesn't initialize the DebugMessenger, must call init.
+	 * @brief Default Constructor: Doesn't initialize the DebugMessenger, must call init.
 	 */
 	DebugMessenger();
 
@@ -44,7 +44,7 @@ public:
 	void init(VulkanInstance& instance);
 
 	/**
-	 * @brief Calls cleanup() to free up memory
+	 * @brief Destructor: Calls cleanup() to free up memory
 	 */
 	~DebugMessenger();
 

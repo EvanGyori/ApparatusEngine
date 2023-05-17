@@ -9,7 +9,7 @@ class VulkanInstance
 {
 public:
 	/**
-	 * @brief Doesn't initialize the instance, must call init().
+	 * @brief Default Constructor: Doesn't initialize the instance, must call init().
 	 */
 	VulkanInstance();
 
@@ -23,13 +23,13 @@ public:
 	void init(const char* appName);
 
 	/**
-	 * @brief Calls cleanup() to free up memory
+	 * @brief Destructor: Calls cleanup() to free up memory
 	 */
 	~VulkanInstance();
 
 	/**
 	 * @brief Destroys the vulkan instance to free up memory.
-	 * Call after all other vulkan objects under this instance have been destroyed.
+	 * Do not use any vulkan objects created under this instance once it has been destroyed.
 	 */
 	void cleanup();
 
@@ -50,7 +50,7 @@ private:
 	 * 
 	 * The given extensions may or may not be supported, be sure to check.
 	 * 
-	 * @return required instance extensions
+	 * @return vector of instance extension names
 	 */
 	std::vector<const char*> getRequiredExtensions();
 	
