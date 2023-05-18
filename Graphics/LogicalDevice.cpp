@@ -4,11 +4,6 @@
 
 #include "DebugMessenger.h"
 
-bool QueueFamily::isComplete()
-{
-	return index.has_value();
-}
-
 LogicalDevice::LogicalDevice() :
 	handle(nullptr),
 	physicalDevice(nullptr),
@@ -27,8 +22,8 @@ void LogicalDevice::init(VkPhysicalDevice _physicalDevice, Surface& surface)
 	VkDeviceCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
-	graphicsFamily = findGraphicsFamily(physicalDevice);
-	presentFamily = findPresentFamily(physicalDevice, surface);
+	graphicsFamily.index = findGraphicsFamily(physicalDevice);
+	presentFamily.index = findPresentFamily(physicalDevice, surface);
 	float priority = 1.0f;
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos{};
 	if (graphicsFamily.index.value() == presentFamily.index.value()) {
@@ -102,9 +97,9 @@ bool LogicalDevice::isPhysicalDeviceSuitable(VkPhysicalDevice device, Surface& s
 	}
 
 	// Check if the device supports the needed queues and that the present queue supports presenting to the specific surface
-	QueueFamily graphicsFamily = findGraphicsFamily(device);
-	QueueFamily presentFamily = findPresentFamily(device, surface);
-	if (!graphicsFamily.isComplete() || !presentFamily.isComplete()) {
+	std::optional<uint32_t> graphicsFamilyIndex = findGraphicsFamily(device);
+	std::optional<uint32_t> presentFamilyIndex = findPresentFamily(device, surface);
+	if (!graphicsFamilyIndex.has_value() || !presentFamilyIndex.has_value()) {
 		return false;
 	}
 
@@ -151,36 +146,36 @@ std::vector<VkQueueFamilyProperties> LogicalDevice::getQueueFamilies(VkPhysicalD
 	return queueFamilies;
 }
 
-QueueFamily LogicalDevice::findGraphicsFamily(VkPhysicalDevice device)
+std::optional<uint32_t> LogicalDevice::findGraphicsFamily(VkPhysicalDevice device)
 {
-	QueueFamily graphicsFamily{};
+	std::optional<uint32_t> graphicsFamilyIndex{};
 
 	auto queueFamilies = getQueueFamilies(device);
 	for (int i = 0; i < queueFamilies.size(); i++) {
 		if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-			graphicsFamily.index = i;
-			return graphicsFamily;
+			graphicsFamilyIndex = i;
+			return graphicsFamilyIndex;
 		}
 	}
 
 	// graphics queue family wasn't found
-	return graphicsFamily;
+	return graphicsFamilyIndex;
 }
 
-QueueFamily LogicalDevice::findPresentFamily(VkPhysicalDevice device, Surface& surface)
+std::optional<uint32_t> LogicalDevice::findPresentFamily(VkPhysicalDevice device, Surface& surface)
 {
-	QueueFamily presentFamily{};
+	std::optional<uint32_t> presentFamilyIndex{};
 
 	auto queueFamilies = getQueueFamilies(device);
 	for (int i = 0; i < queueFamilies.size(); i++) {
 		if (surface.supportsQueueFamily(device, i)) {
-			presentFamily.index = i;
-			return presentFamily;
+			presentFamilyIndex = i;
+			return presentFamilyIndex;
 		}
 	}
 
 	// present queue family wasn't found
-	return presentFamily;
+	return presentFamilyIndex;
 }
 
 void LogicalDevice::getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos)

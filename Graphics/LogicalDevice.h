@@ -13,8 +13,6 @@ struct QueueFamily
 {
 	VkQueue queue;
 	std::optional<uint32_t> index;
-
-	bool isComplete();
 };
 
 class LogicalDevice
@@ -107,15 +105,46 @@ private:
 	 */
 	static bool isExtensionsSupported(VkPhysicalDevice device, std::vector<const char*> extensions);
 
+	/**
+	 * @brief Returns the queue families that the specified device supports
+	 * 
+	 * @param device - the physical device used to find the queue families
+	 * 
+	 * @return vector of queue families supported by device
+	 */
 	static std::vector<VkQueueFamilyProperties> getQueueFamilies(VkPhysicalDevice device);
-	static QueueFamily findGraphicsFamily(VkPhysicalDevice device);
-	static QueueFamily findPresentFamily(VkPhysicalDevice device, Surface& surface);
 
+	/**
+	 * @brief Returns an optional that may have the index of a queue family that supports graphics.
+	 * If the optional has no value, the specified device has no graphics queue family.
+	 * 
+	 * @param device - the physical device used to find all available queue families
+	 * 
+	 * @return first queue family found supporting graphics. Empty optional if none were found.
+	 */
+	static std::optional<uint32_t> findGraphicsFamily(VkPhysicalDevice device);
+
+	/**
+	 * @brief Returns an optional that may have the index of a queue family that supports 
+	 * presenting to the specified surface.
+	 * If the optional has no value, the specified device has no queue family that supports
+	 * presenting to the specified surface.
+	 * 
+	 * @param device - the physical device used to find all available queue families
+	 * @param surface - the surface to test support for presenting to
+	 * 
+	 * @return first queue family found that supports presenting to the surface. Empty optional if none were found.
+	 */
+	static std::optional<uint32_t> findPresentFamily(VkPhysicalDevice device, Surface& surface);
+
+	// Recursive creation of queue create infos. Input a vector to store the create infos and provide
+	// the info to put into each create info.
 	template<typename... Params>
 	void getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos,
 		uint32_t queueFamilyIndex, uint32_t queueCount, float* priorities,
 		Params... params);
 
+	// base case for recursion
 	void getQueueCreateInfos(std::vector<VkDeviceQueueCreateInfo>& createInfos);
 };
 
