@@ -35,6 +35,14 @@ public:
 	void cleanup();
 
 	/**
+	 * @brief Returns handle to this surface.
+	 * Limit uses of this function and use other functions when available.
+	 * 
+	 * @return surface handle
+	 */
+	VkSurfaceKHR getHandle();
+
+	/**
 	 * @brief Returns the surface's capabilities that are compatible with the specified device
 	 * 
 	 * @param device - the physical device to check for compatibility

@@ -45,6 +45,21 @@ public:
 	void cleanup();
 
 	/**
+	 * @brief Returns the handle to this logical device.
+	 * Limit uses of this function and use other functions.
+	 * 
+	 * @return device handle
+	 */
+	VkDevice getHandle();
+
+	/**
+	 * @brief Returns the physical device this logical device is a view of.
+	 * 
+	 * @return physical device
+	 */
+	VkPhysicalDevice getPhysicalDevice();
+
+	/**
 	 * @brief Returns a physical device that supports all the neccessary details for use in graphics.
 	 * 
 	 * @param instance - used to locate all physical devices

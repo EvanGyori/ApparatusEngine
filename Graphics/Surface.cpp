@@ -29,6 +29,11 @@ void Surface::cleanup()
 	}
 }
 
+VkSurfaceKHR Surface::getHandle()
+{
+	return handle;
+}
+
 VkSurfaceCapabilitiesKHR Surface::getCapabilities(VkPhysicalDevice device)
 {
 	VkSurfaceCapabilitiesKHR capabilities;

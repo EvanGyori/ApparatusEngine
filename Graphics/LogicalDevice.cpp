@@ -22,6 +22,7 @@ void LogicalDevice::init(VkPhysicalDevice _physicalDevice, Surface& surface)
 	VkDeviceCreateInfo createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
+	// Get queue families and create infos for queues
 	graphicsFamily.index = findGraphicsFamily(physicalDevice);
 	presentFamily.index = findPresentFamily(physicalDevice, surface);
 	float priority = 1.0f;
@@ -41,6 +42,7 @@ void LogicalDevice::init(VkPhysicalDevice _physicalDevice, Surface& surface)
 	createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 	createInfo.ppEnabledExtensionNames = extensions.data();
 
+	// No features are currently needed
 	VkPhysicalDeviceFeatures features{};
 	createInfo.pEnabledFeatures = &features;
 
@@ -61,6 +63,16 @@ void LogicalDevice::cleanup()
 		vkDestroyDevice(handle, nullptr);
 		handle = nullptr;
 	}
+}
+
+VkDevice LogicalDevice::getHandle()
+{
+	return handle;
+}
+
+VkPhysicalDevice LogicalDevice::getPhysicalDevice()
+{
+	return physicalDevice;
 }
 
 VkPhysicalDevice LogicalDevice::findSuitablePhysicalDevice(VulkanInstance& instance, Surface& surface)
@@ -150,6 +162,7 @@ std::optional<uint32_t> LogicalDevice::findGraphicsFamily(VkPhysicalDevice devic
 {
 	std::optional<uint32_t> graphicsFamilyIndex{};
 
+	// Search for a queue family that supports graphics
 	auto queueFamilies = getQueueFamilies(device);
 	for (int i = 0; i < queueFamilies.size(); i++) {
 		if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
@@ -166,6 +179,7 @@ std::optional<uint32_t> LogicalDevice::findPresentFamily(VkPhysicalDevice device
 {
 	std::optional<uint32_t> presentFamilyIndex{};
 
+	// Search for a queue family that supports presenting to the surface
 	auto queueFamilies = getQueueFamilies(device);
 	for (int i = 0; i < queueFamilies.size(); i++) {
 		if (surface.supportsQueueFamily(device, i)) {
